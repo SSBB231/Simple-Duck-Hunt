@@ -28,6 +28,9 @@ class Game:
 		#Ducks list.
 		self.ducks = []
 		
+		#Background Color
+		self.color = mycolors.LIGHT_BLUE
+		
 		#Flag to keep game going.
 		self.end = False
 		
@@ -35,15 +38,15 @@ class Game:
 		self.window = pygame.display.set_mode((self.info.current_w, self.info.current_h))
 		
 		#Create the ducks for this game.
-		self.makeDucks(3)
+		self.makeDucks(5)
 	
 	def makeDucks(self, how_many):
 		for i in range(how_many):
-			self.ducks.append(self.createDuck(self.window, "easy"))
+			self.ducks.append(self.createDuck(self.window, "easy", (0, i*150+100)))
 	
 	def render_Objects(self):
 	
-		self.window.fill(mycolors.LIGHT_BLUE)
+		self.window.fill(self.color)
 	
 		for duck in self.ducks:
 			duck.beDrawn()
@@ -51,10 +54,16 @@ class Game:
 		pygame.display.update()
 		
 		self.clock.tick(20)
+		
+	def change_background(self, color):
+		self.color = color
 	
 	
 	#receiving shotting location from Player
-	def getInputs(self):
+	def get_inputs(self):
+	
+		hit = False
+		locationWhereShot = None
 	
 		#Go over events for event handling.
 		for event in pygame.event.get():
@@ -63,21 +72,40 @@ class Game:
 			if(event.type == pygame.QUIT):
 				self.end = True
 				
-			#Mouse event handling.
-			if(event.type == pygame.MOUSEBUTTONDOWN):
-				pass
-	
-		locationWhereShot = self.player.shotAt()
-		isShot = self.check_hit_duck(locationWhereShot)
+			if(self.player == self.players["R"]):
+				locationWhereShot = self.player.shotAt()
+				hit = self.check_hit_duck(locationWhereShot)
+			else:
+				if(event.type == pygame.MOUSEBUTTONDOWN):
+					locationWhereShot = self.player.shotAt(event)
+					hit = self.check_hit_duck(locationWhereShot)
+				
+			#Check for Key Events.	
+			if(event.type == pygame.KEYDOWN):
+				
+				#Check if key was B
+				if(event.key == pygame.K_b):
+					if(self.color == mycolors.LIGHT_BLUE):
+						self.change_background(mycolors.BLACK)
+					else:
+						self.change_background(mycolors.LIGHT_BLUE)
+		
+		if(hit):
+			for duck in self.ducks:
+				if(duck.was_hit(locationWhereShot)):
+					duck.die()
 		
 		
 	#check if duck is shot
 	def check_hit_duck(self, location):
 	
-		if self.window.get_at(location) == mycolors.YELLOW:
-			return True
+		if(location == None):
+			pass
 		else:
-			return False
+			if self.window.get_at(location) == mycolors.YELLOW:
+				return True
+			else:
+				return False
 			
 	#update objects	
 	def updateObjects(self):
@@ -89,7 +117,7 @@ class Game:
 	
 		while(not self.quit()):
 
-			self.getInputs()
+			self.get_inputs()
 
 			self.updateObjects()
 
@@ -106,14 +134,14 @@ class Game:
 	def quit(self): 
 		return self.end
 		
-	def createDuck(self, window, typeDuck):
+	def createDuck(self, window, typeDuck, pos):
 	
 		if(typeDuck == "hard"):
-			return Duck(window, 10)
+			return Duck(window, 10 ,pos)
 		elif(typeDuck == "medium"):
-			return  Duck(window, 7)
+			return  Duck(window, 7, pos)
 		else:
-			return Duck(window, 5)
+			return Duck(window, 5, pos)
 			
 			
 			

@@ -4,9 +4,8 @@ import mycolors
 
 class Duck:
 	
-	def __init__(self, window, speed):
-		self.x = 0
-		self.y = 0
+	def __init__(self, window, speed, pos):
+		self.x, self.y = pos
 		
 		self.width = window.get_width()//10
 		self.height = self.width
@@ -16,9 +15,21 @@ class Duck:
 		self.window = window
 		
 		self.color = mycolors.YELLOW
+		
 	#draw duck  
 	def beDrawn(self):
 		self.window.fill(self.color, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+		
+	def was_hit(self, location):
+	
+		if(location == None):
+			pass
+		else:
+	
+			x, y = location
+		
+			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
+				return True
 		
 	#when duck dies
 	def die(self):
