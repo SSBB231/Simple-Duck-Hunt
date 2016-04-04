@@ -60,7 +60,7 @@ class Game:
 	
 	
 	#receiving shotting location from Player
-	def get_inputs(self):
+	def handle_inputs(self):
 	
 		hit = False
 		locationWhereShot = None
@@ -117,7 +117,7 @@ class Game:
 	
 		while(not self.quit()):
 
-			self.get_inputs()
+			self.handle_inputs()
 
 			self.updateObjects()
 
