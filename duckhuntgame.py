@@ -12,6 +12,9 @@ import mycolors
 #Importing pygame.
 import pygame
 
+#import game_music
+from game_music import MusicPlayer
+
 class Game:
 	
 	def __init__(self):
@@ -39,6 +42,8 @@ class Game:
 		
 		#Create the ducks for this game.
 		self.makeDucks(5)
+		
+		self.music_player = MusicPlayer()
 	
 	def makeDucks(self, how_many):
 		for i in range(how_many):
@@ -96,9 +101,13 @@ class Game:
 						self.change_background(mycolors.LIGHT_BLUE)
 		
 		if(hit):
-			for duck in self.ducks:
+			for i in range(len(self.ducks)):
+				duck = self.ducks[i]
 				if(duck.was_hit(locationWhereShot)):
 					duck.die()
+					
+		
+					
 		
 		
 	#check if duck is shot
@@ -113,7 +122,7 @@ class Game:
 				return False
 			
 	#update objects	
-	def updateObjects(self):
+	def update_objects(self):
 		for duck in self.ducks:
 			duck.move()
 			
@@ -124,7 +133,7 @@ class Game:
 
 			self.handle_inputs()
 
-			self.updateObjects()
+			self.update_objects()
 
 			self.render_Objects()
 

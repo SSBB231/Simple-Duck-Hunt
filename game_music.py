@@ -1,15 +1,24 @@
-from pygame import mixer
+import pygame
 
-music.load("Duck Hunt Nes Soundtrack.mp3")
-music.load("Duck Hunt Sound Effects.mp3")
 
-class game_music:
+
+class MusicPlayer:
   
   def __init__(self):
-    self.tune = None
+	
+	self.sounds = {}
+
+	self.sounds["start"] = pygame.mixer.Sound("start.mp3")
+	self.sounds["get_ready"] = pygame.mixer.Sound("get_ready.mp3")
+	self.sounds["shot"] = pygame.mixer.Sound("shot.mp3")
+	self.sounds["falling"] = pygame.mixer.Sound("falling.mp3")
+	self.sounds["lost_duck"] = pygame.mixer.Sound("lost_duck.mp3")
+	self.sounds["dog_laughing"] = pygame.mixer.Sound("dog_laughing.mp3")
+	
+    self.tune = self.sounds["start"]
   
   def play_sound(self, tune_name):
-    self.tune = tune_name
+  
+    self.tune = self.sounds[tune_name]
+	pygame.mixer.Sound.play(self.tune)
     
-    if tune_name == "gameover":
-      music.set_pos
