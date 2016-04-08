@@ -12,6 +12,9 @@ import mycolors
 #Importing pygame.
 import pygame
 
+#import game_music
+from game_music import MusicPlayer
+
 class Game:
 	
 	def __init__(self):
@@ -39,6 +42,8 @@ class Game:
 		
 		#Create the ducks for this game.
 		self.makeDucks(5)
+		
+		self.music_player = MusicPlayer()
 	
 	def makeDucks(self, how_many):
 		for i in range(how_many):
