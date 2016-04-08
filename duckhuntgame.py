@@ -46,13 +46,18 @@ class Game:
 	
 	def render_Objects(self):
 	
+		#Fill the window with the given color.
 		self.window.fill(self.color)
 	
+		#This draws the ducks.
 		for duck in self.ducks:
 			duck.beDrawn()
 			
+			
+		#This updates the entire display.
 		pygame.display.update()
 		
+		#This will maintain 20 fps rate.
 		self.clock.tick(20)
 		
 	def change_background(self, color):
