@@ -1,11 +1,12 @@
-from pygame import mixer
+import pygame
 
-music.load("Duck Hunt Nes Soundtrack.mp3")
-music.load("Duck Hunt Sound Effects.mp3")
+start = pygame.mixer.Sound("start.mp3")
 
 class game_music:
   
   def __init__(self):
+	
+  
     self.tune = None
   
   def play_sound(self, tune_name):
