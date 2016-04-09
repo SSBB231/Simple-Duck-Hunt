@@ -87,6 +87,7 @@ class Game:
 				hit = self.check_hit_duck(locationWhereShot)
 			else:
 				if(event.type == pygame.MOUSEBUTTONDOWN):
+					self.music_player.play_sound("shot")
 					locationWhereShot = self.player.shotAt(event)
 					hit = self.check_hit_duck(locationWhereShot)
 				
