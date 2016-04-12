@@ -12,6 +12,7 @@ import mycolors
 #import interface
 from display import *
 
+from game_music import MusicPlayer
 
 
 #Importing pygame.
@@ -30,12 +31,14 @@ class Game:
 		#Create info object for screen resolution and other info.
 		self.info = pygame.display.Info()
 		#set window
-		self.window = pygame.display.set_mode((int(self.info.current_w*0.6),int(self.info.current_h*0.6)))
+		self.window = pygame.display.set_mode(((self.info.current_w),(self.info.current_h)))
 			#window size for convinience
 		self.w = self.window.get_width()
 		self.h = self.window.get_height()
 
 		self.mode = None
+		
+		self.music_player = MusicPlayer()
 	
 	#Create the ducks for this game.
 	#self.makeDucks(3)
@@ -45,7 +48,13 @@ class Game:
 		#Ducks list.
 		#self.ducks = []
 
-
+	##==========================================================================
+	##==========================================================================
+	def load_cursor(self):
+		pass
+	##==========================================================================
+	##==========================================================================
+	
 	##==========================================================================
 	##==========================================================================
 	#switch game state, must turn off all other game states
@@ -186,6 +195,8 @@ class Game:
 
 	#initialize game
 	def init(self):
+	
+		self.music_player.play_sound("start_game")
 		self.beginning_screen()
 		
 		#main game loop
@@ -199,6 +210,7 @@ class Game:
 
 		
 			elif self.game_states["modes"] == True:
+				self.music_player.play_sound("dog_laughing")
 				while self.game_states["modes"]:
 					self.select_mode()
 				#mode selection state ---> ingame state / quit game
@@ -207,6 +219,7 @@ class Game:
 
 			
 			elif self.game_states["in"] == True:
+				self.music_player.play_sound("start_round")				
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
 				#in game state   ----> game over state / quit game
