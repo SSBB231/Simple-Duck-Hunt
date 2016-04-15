@@ -40,13 +40,13 @@ class Game:
 		
 		self.music_player = MusicPlayer()
 	
-	#Create the ducks for this game.
-	#self.makeDucks(3)
-		#Give this game a list of players to pick from.
-		#self.players = {"P1": InteractivePlayer(), "R": Robot()}
-		#self.player = self.players["P1"]
+	
 		#Ducks list.
-		#self.ducks = []
+		self.ducks = []
+		#Create the ducks for this game.
+		#Give this game a list of players to pick from.
+		self.players = {"P1": InteractivePlayer(), "R": Robot()}
+		self.player = self.players["P1"]
 
 	##==========================================================================
 	##==========================================================================
@@ -59,6 +59,7 @@ class Game:
 	##==========================================================================
 	#switch game state, must turn off all other game states
 	def switch_state(self, state):
+		self.music_player.stop()
 		for i in self.game_states.keys():
 			self.game_states[i] = False
 		self.game_states[state] = True
@@ -89,9 +90,13 @@ class Game:
 	#Include: blue background, grass, "Duck: ", "Bullets: ", "Score: "
 	def ingame_screen(self):
 		self.window.fill(mycolors.LIGHT_BLUE)
+		
+		#Draw Ducks
+		self.render_objects()
+		
 		display = Display(self.window)
 		display.draw_grass()
-		display.text("Ducks:"  , int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
+		display.text("Ducks: " + str(len(self.ducks)), int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
 		display.text("Bullets:", int(self.h*0.1), mycolors.BLACK, int(self.w*0.4), int(self.h*0.85), False)
 		display.text("Score:"  , int(self.h*0.1), mycolors.BLACK, int(self.w*0.7), int(self.h*0.85), False)
 		pygame.display.update()
@@ -179,18 +184,34 @@ class Game:
 				
 				if event.key == pygame.K_e:
 					self.mode = "easy"
+					
+					
+					self.make_ducks(3, self.mode)
+					
 					self.switch_state("in")
 					
 				elif event.key == pygame.K_h:
 					self.mode = "hard"
+					
+					
+					
+					self.make_ducks(3, self.mode)
+					
 					self.switch_state("in")
 					
 				elif event.key == pygame.K_m:
 					self.mode = "medium"
+					
+					
+					self.make_ducks(3, self.mode)
+					
 					self.switch_state("in")
 	#==========================================================================
 	##==========================================================================
 
+	def clear_ducks(self):
+		self.ducks = []
+	
 	#initialize game
 	def init(self):
 	
@@ -218,10 +239,16 @@ class Game:
 			
 			elif self.game_states["in"] == True:
 				self.music_player.play_sound("start_round")
+				#Delay move ducks for six seconds until sound ends.
+				time.sleep(6)
+				
+				self.make_ducks_visible()
 				
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
-					self.clock.tick(30)
+					self.update_objects()
+					self.ingame_screen()
+					self.clock.tick(20)
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()
 
@@ -249,47 +276,43 @@ class Game:
 		
 
 	#update objects
-	#def updateObjects(self):
-	#	for duck in self.ducks:
-	#		duck.move()
+	def update_objects(self):
+		for duck in self.ducks:
+			duck.move()
 
 
 
 
-	#def makeDucks(self, how_many):
-	#	for i in range(how_many):
-	#		self.ducks.append(self.createDuck(self.window, "easy"))
-
-
-
-
-	#def createDuck(self, window, typeDuck):
+	def make_ducks(self, how_many, mode):
 	
-	#	if(typeDuck == "hard"):
-	#		return Duck(window, 10)
-	#	elif(typeDuck == "medium"):
-	#		return  Duck(window, 7)
-	#	else:
-	#		return Duck(window, 5)
+		if(len(self.ducks) > 0):
+			self.clear_ducks()
+			
+		for i in range(how_many):
+			self.ducks.append(self.createDuck(self.window, mode))
+
+
+
+
+	def createDuck(self, window, typeDuck):
+	
+		return Duck(window, typeDuck)
 			
 
 		#def quit(self): 
 		#	return self.quit_game	
 
 
-
+	def make_ducks_visible(self):
+		for duck in self.ducks:
+			duck.set_visible(True)
 			
 			
-	 ##==========================================================================
-	#def render_Objects(self):
+	##==========================================================================
+	def render_objects(self):
 	
-	
-	#	for duck in self.ducks:
-	#		duck.beDrawn()
-			
-#		pygame.display.update()
-		
-#		self.clock.tick(20)
+		for duck in self.ducks:
+			duck.beDrawn()
 
 
 
