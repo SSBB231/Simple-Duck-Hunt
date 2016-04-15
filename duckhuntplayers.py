@@ -8,6 +8,8 @@ class Player(object):
 		#Initializes score to zero.
 		self.score = 0
 		self.name = "P"
+		
+		self.num_bullets = 3
 	
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.

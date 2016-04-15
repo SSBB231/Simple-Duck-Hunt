@@ -161,12 +161,10 @@ class Game:
 			if event.type == pygame.QUIT:
 				self.switch_state("quit")
 
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				#mouse position
-				cur = pygame.mouse.get_pos()
+			if event.type == pygame.KEYDOWN:
 				
 				#click start new game button
-				if self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.6 > cur[1] > self.h*0.5:
+				if event.key == pygame.K_e:
 					self.switch_state("over")
 	
 	#Possible events: KEYS(E, H, M), quit
@@ -219,9 +217,11 @@ class Game:
 
 			
 			elif self.game_states["in"] == True:
-				self.music_player.play_sound("start_round")				
+				self.music_player.play_sound("start_round")
+				
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
+					self.clock.tick(30)
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()
 
