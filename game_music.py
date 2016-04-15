@@ -20,4 +20,7 @@ class MusicPlayer:
 
 		self.tune = self.sounds[tune_name]
 		pygame.mixer.Sound.play(self.tune)
+		
+	def stop(self):
+		self.tune.stop()
 	
