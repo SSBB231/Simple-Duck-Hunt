@@ -214,7 +214,9 @@ class Game:
 						self.switch_state("over")
 					else:
 						self.ingame_screen()
-						self.duck = Duck(self.window, self.mode)
+						if self.duck == None:
+							self.duck = Duck(self.window, self.mode)
+							self.num_duck--
 						self.render_objects()
 						self.update_objects()
 						pygame.display.update()
