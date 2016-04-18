@@ -16,6 +16,7 @@ class Duck:
 		self.y_speed = 0
 		self.img_duck = pygame.image.load("duck.png")
 		self.img_duck = pygame.transform.scale(self.img_duck, (self.width,self.height))
+		
 		if(mode == "easy"):
 			self.x_speed = 7
 			self.y_speed = -3
