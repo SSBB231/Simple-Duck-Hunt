@@ -216,7 +216,7 @@ class Game:
 						self.ingame_screen()
 						if self.duck == None:
 							self.duck = Duck(self.window, self.mode)
-							self.num_duck -= 1
+							self.num_ducks -= 1
 						self.render_objects()
 						self.update_objects()
 						pygame.display.update()
