@@ -209,6 +209,9 @@ class Game:
 				self.ingame_screen()
 			elif self.game_states["in"] == True:
 				self.music_player.play_sound("start_round")
+				
+				self.num_ducks = 3
+
 				#Delay move ducks for six seconds until sound ends.
 				time.sleep(6)
 				
