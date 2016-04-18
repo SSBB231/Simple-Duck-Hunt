@@ -13,7 +13,7 @@ class Player(object):
 	
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
-	def shotAt(self):
+	def shot_at(self):
 		return (0,0)
 		
 	def update_score(self, points):
@@ -40,6 +40,8 @@ class InteractivePlayer(Player):
 		
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
+	def shot_at(self, event):
+		return event.pos
 		
 	def update(self):
 		pass
@@ -57,7 +59,7 @@ class Robot(Player):
 		Player.__init__(self)
 		self.name = "R"
 		
-	def shotAt(self):
+	def shot_at(self):
 		return (0,0)
 		
 	def update():

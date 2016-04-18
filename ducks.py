@@ -21,10 +21,10 @@ class Duck:
 		down = pygame.image.load("down.gif")
 		down = pygame.transform.scale(down, (self.width,self.height))
 		
-		#deadimg = pygame.image.load("dead.gif")
-		#deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
+		deadimg = pygame.image.load("dead.png")
+		deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
 		
-		self.images = {"up": up, "down": down}
+		self.images = {"up": up, "down": down, "dead": deadimg}
 		
 		self.img_duck = self.images["up"]
 		
@@ -58,9 +58,10 @@ class Duck:
 	#draw duck  
 	def beDrawn(self):
 		if(self.visible):
-			self.window.blit(self.img_duck, (self.x,self.y))
+			self.window.blit(self.img_duck, (self.x-self.width//2,self.y-self.height//2))
 		
-			self.change_animation()
+			if(not self.dead):
+				self.change_animation()
 	
 	def change_animation(self):
 		if(self.img_duck == self.images["up"]):
@@ -81,23 +82,30 @@ class Duck:
 		if(self.wait_time <= 0):
 			self.visible = False
 		
-#	def was_hit(self, location):
-	
-#		if(location == None):
-#			pass
-#		else:
-	
-#			x, y = location
-		
-#			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
-#				return True
+	def was_hit(self, location):
+		if(location == None):
+			return False
+		else:
+			x, y = location
+			
+			print(location, (self.x, self.y), (self.width, self.height))
+			
+			
+			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
+				return True
+			else:
+				return False
+			
 		
 	#when duck dies
-#	def die(self):
-#		self.color = mycolors.RED
-#		self.dead = True
-#		self.change_x_speed(0)
-#		self.change_y_speed(20)
+	def die(self):
+		print("Calling Die")
+		
+		self.change_image("dead")
+		
+		self.dead = True
+		self.change_x_speed(0)
+		self.change_y_speed(20)
 		
 	#check if duck is on screen	
 	def on_screen(self):
@@ -117,10 +125,10 @@ class Duck:
 #			self.visible = False
 			
 			
-#	def change_x_speed(self, speed):
-#		self.x_speed = speed
+	def change_x_speed(self, speed):
+		self.x_speed = speed
 		
-#	def change_y_speed(self, speed):
-#		self.y_speed = speed
+	def change_y_speed(self, speed):
+		self.y_speed = speed
 		
 ##=========================================================

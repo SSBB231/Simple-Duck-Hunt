@@ -31,7 +31,8 @@ class Game:
 		#Create info object for screen resolution and other info.
 		self.info = pygame.display.Info()
 		#set window
-		self.window = pygame.display.set_mode(((self.info.current_w),(self.info.current_h)))
+		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h))
+		
 			#window size for convinience
 		self.w = self.window.get_width()
 		self.h = self.window.get_height()
@@ -165,6 +166,16 @@ class Game:
 				#click start new game button
 				if event.key == pygame.K_e:
 					self.switch_state("over")
+			if(event.type == pygame.MOUSEBUTTONDOWN):
+				self.music_player.play_sound("shot")
+				locationWhereShot = self.player.shot_at(event)
+				hit = self.check_hit_duck(locationWhereShot)
+				
+				if(hit):
+					print("Hit duck")
+					self.duck.die()
+				else:
+					print("Didn't hit duck")
 	
 	#Possible events: KEYS(E, H, M), quit
 	def select_mode(self):
@@ -278,11 +289,8 @@ class Game:
 
 				#check if duck is shot
 	def check_hit_duck(self, location):
-	
-	    if self.window.get_at(location) == mycolors.YELLOW:
-	        return True
-	    else:
-	        return False
+		return self.duck.was_hit(location)
+		
 				
 	##==========================================================================
 			
