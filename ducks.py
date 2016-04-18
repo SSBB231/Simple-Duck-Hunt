@@ -30,19 +30,19 @@ class Duck:
 		
 		self.window = window
 		
-		self.color = mycolors.YELLOW
+#		self.color = mycolors.YELLOW
 		
-		self.dead = False
+#		self.dead = False
 		
-		self.visible = False
+#		self.visible = False
 		
-		self.wait_time = 20
+#		self.wait_time = 20
 		
-	def is_dead(self):
-		return self.dead
+#	def is_dead(self):
+#		return self.dead
 		
-	def is_visible(self):
-		return self.visible
+#	def is_visible(self):
+#		return self.visible
 		
 		
 	#draw duck  
@@ -62,32 +62,32 @@ class Duck:
 				return True
 		
 	#when duck dies
-	def die(self):
-		self.color = mycolors.RED
-		self.dead = True
-		self.change_x_speed(0)
-		self.change_y_speed(20)
+#	def die(self):
+#		self.color = mycolors.RED
+#		self.dead = True
+#		self.change_x_speed(0)
+#		self.change_y_speed(20)
 		
 	#check if duck is on screen	
-	def onScreen(self):
-		width, height = self.window.get_size()		
-		return True
+#	def onScreen(self):
+#		width, height = self.window.get_size()		
+#		return True
 			
 	def move(self):
 		self.x += self.x_speed
 		self.y += self.y_speed
 		
-		if(self.dead and self.wait_time > 0):
-			self.wait_time -= 1
+#		if(self.dead and self.wait_time > 0):
+#			self.wait_time -= 1
+#			
+#		if(self.wait_time <= 0):
+#			self.visible = False
 			
-		if(self.wait_time <= 0):
-			self.visible = False
 			
-			
-	def change_x_speed(self, speed):
-		self.x_speed = speed
+#	def change_x_speed(self, speed):
+#		self.x_speed = speed
 		
-	def change_y_speed(self, speed):
-		self.y_speed = speed
+#	def change_y_speed(self, speed):
+#		self.y_speed = speed
 		
 ##=========================================================
