@@ -14,8 +14,19 @@ class Duck:
 		
 		self.x_speed = 0
 		self.y_speed = 0
-		self.img_duck = pygame.image.load("duck.png")
-		self.img_duck = pygame.transform.scale(self.img_duck, (self.width,self.height))
+		
+		up = pygame.image.load("up.gif")
+		up = pygame.transform.scale(up, (self.width,self.height))
+		
+		down = pygame.image.load("down.gif")
+		down = pygame.transform.scale(down, (self.width,self.height))
+		
+		#deadimg = pygame.image.load("dead.gif")
+		#deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
+		
+		self.images = {"up": up, "down": down}
+		
+		self.img_duck = self.images["up"]
 		
 		if(mode == "easy"):
 			self.x_speed = 7
@@ -48,6 +59,17 @@ class Duck:
 	#draw duck  
 	def beDrawn(self):
 		self.window.blit(self.img_duck, (self.x,self.y))
+		
+		self.change_animation()
+	
+	def change_animation(self):
+		if(self.img_duck == self.images["up"]):
+			self.change_image("down")
+		else:
+			self.change_image("up")
+		
+	def change_image(self, name):
+		self.img_duck = self.images[name]
 	
 	def move(self):
 		self.x += self.x_speed
