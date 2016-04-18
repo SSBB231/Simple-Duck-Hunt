@@ -9,7 +9,7 @@ class Duck:
 		self.width = window.get_width()//10
 		self.height = self.width
 		
-		self.x = 0
+		self.x = self.width
 		self.y = window.get_height()*0.7
 		
 		self.x_speed = 0
