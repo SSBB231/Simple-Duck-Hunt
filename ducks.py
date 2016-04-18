@@ -1,7 +1,7 @@
 #This module contains all duck classes.
 #RGBA color definitions.
 import mycolors
-
+import pygame
 class Duck:
 	
 	def __init__(self, window, mode):
@@ -14,7 +14,8 @@ class Duck:
 		
 		self.x_speed = 0
 		self.y_speed = 0
-		
+		self.img_duck = pygame.image.load("duck.png")
+		self.img_duck = pygame.transform.scale(self.img_duck, (self.width,self.height))
 		if(mode == "easy"):
 			self.x_speed = 7
 			self.y_speed = -3
@@ -48,7 +49,7 @@ class Duck:
 	#draw duck  
 	def beDrawn(self):
 		if(self.visible):
-			self.window.fill(self.color, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+			self.window.blit(self.img_duck, (self.x,self.y))
 		
 		
 	def was_hit(self, location):
