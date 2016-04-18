@@ -1,7 +1,7 @@
 #This module contains all duck classes.
 #RGBA color definitions.
 import mycolors
-
+import pygame
 class Duck:
 	
 	def __init__(self, window, mode):
@@ -14,6 +14,19 @@ class Duck:
 		
 		self.x_speed = 0
 		self.y_speed = 0
+		
+		up = pygame.image.load("up.gif")
+		up = pygame.transform.scale(up, (self.width,self.height))
+		
+		down = pygame.image.load("down.gif")
+		down = pygame.transform.scale(down, (self.width,self.height))
+		
+		#deadimg = pygame.image.load("dead.gif")
+		#deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
+		
+		self.images = {"up": up, "down": down}
+		
+		self.img_duck = self.images["up"]
 		
 		if(mode == "easy"):
 			self.x_speed = 7
@@ -28,67 +41,76 @@ class Duck:
 		
 		self.window = window
 		
-		self.color = mycolors.YELLOW
+#		self.color = mycolors.YELLOW
 		
-		self.dead = False
+#		self.dead = False
 		
-		self.visible = False
+#		self.visible = False
 		
-		self.wait_time = 20
+#		self.wait_time = 20
 		
-	def is_dead(self):
-		return self.dead
+#	def is_dead(self):
+#		return self.dead
 		
-	def is_visible(self):
-		return self.visible
+#	def is_visible(self):
+#		return self.visible
 		
-	def set_visible(self, visible):
-		self.visible = visible
 		
 	#draw duck  
 	def beDrawn(self):
-		if(self.visible):
-			self.window.fill(self.color, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+		self.window.blit(self.img_duck, (self.x,self.y))
 		
-		
-	def was_hit(self, location):
+		self.change_animation()
 	
-		if(location == None):
-			pass
+	def change_animation(self):
+		if(self.img_duck == self.images["up"]):
+			self.change_image("down")
 		else:
+			self.change_image("up")
+		
+	def change_image(self, name):
+		self.img_duck = self.images[name]
 	
-			x, y = location
-		
-			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
-				return True
-		
-	#when duck dies
-	def die(self):
-		self.color = mycolors.RED
-		self.dead = True
-		self.change_x_speed(0)
-		self.change_y_speed(20)
-		
-	#check if duck is on screen	
-	def onScreen(self):
-		width, height = self.window.get_size()		
-		return True
-			
 	def move(self):
 		self.x += self.x_speed
 		self.y += self.y_speed
 		
-		if(self.dead and self.wait_time > 0):
-			self.wait_time -= 1
-			
-		if(self.wait_time <= 0):
-			self.visible = False
-			
-			
-	def change_x_speed(self, speed):
-		self.x_speed = speed
+#	def was_hit(self, location):
+	
+#		if(location == None):
+#			pass
+#		else:
+	
+#			x, y = location
 		
-	def change_y_speed(self, speed):
-		self.y_speed = speed
+#			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
+#				return True
+		
+	#when duck dies
+#	def die(self):
+#		self.color = mycolors.RED
+#		self.dead = True
+#		self.change_x_speed(0)
+#		self.change_y_speed(20)
+		
+	#check if duck is on screen	
+#	def onScreen(self):
+#		width, height = self.window.get_size()		
+#		return True
+			
+
+		
+#		if(self.dead and self.wait_time > 0):
+#			self.wait_time -= 1
+#			
+#		if(self.wait_time <= 0):
+#			self.visible = False
+			
+			
+#	def change_x_speed(self, speed):
+#		self.x_speed = speed
+		
+#	def change_y_speed(self, speed):
+#		self.y_speed = speed
 		
 ##=========================================================
