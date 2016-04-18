@@ -40,7 +40,7 @@ class Game:
 		
 		self.music_player = MusicPlayer()
 	
-	
+		self.num_duck = 3
 		#Ducks list.
 		self.ducks = []
 		#Create the ducks for this game.
@@ -116,95 +116,65 @@ class Game:
 	#Events handling
 	#Possible events: quit, start&quit buttons
 	def mouse_action_beginning(self):
-				   
 		#Go over events for event handling.
 		for event in pygame.event.get():
-  
 			#Event handling to quit game.
 			if(event.type == pygame.QUIT):
 				self.switch_state("quit")
-				
 			#Mouse event handling.
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				#mouse position
 				cur = pygame.mouse.get_pos()
-				
 				#click start button
 				if self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.6 > cur[1] > self.h*0.5:
 					self.switch_state("modes")
-				
 				#click quit button
 				elif self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.7 > cur[1] > self.h*0.6:
 					self.switch_state("quit")
 					
 	#Possible events: quit, restart&quit buttons
 	def mouse_action_game_over(self):
-		
 		for event in pygame.event.get():
-			
 			if event.type == pygame.QUIT:
 				self.switch_state("quit")
-
 			#Mouse event handling.
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				#mouse position
 				cur = pygame.mouse.get_pos()
-				
 				#click start new game button
 				if self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.6 > cur[1] > self.h*0.5:
 					self.switch_state("modes")
-				
 				#click quit button
 				elif self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.7 > cur[1] > self.h*0.6:
 					self.switch_state("quit")
 				
 	#Possible events: quit, shoot
 	def mouse_action_ingame(self):
-		
 		for event in pygame.event.get():
-			
 			if event.type == pygame.QUIT:
 				self.switch_state("quit")
-
 			if event.type == pygame.KEYDOWN:
-				
 				#click start new game button
 				if event.key == pygame.K_e:
 					self.switch_state("over")
 	
 	#Possible events: KEYS(E, H, M), quit
 	def select_mode(self):
-		
 		for event in pygame.event.get():
-			
 			if event.type == pygame.QUIT:
 				self.switch_state("quit")
-
 			if event.type == pygame.KEYDOWN:
-				
 				if event.key == pygame.K_e:
 					self.mode = "easy"
-					
-					
 					self.make_ducks(3, self.mode)
-					
 					self.switch_state("in")
-					
 				elif event.key == pygame.K_h:
 					self.mode = "hard"
-					
-					
-					
 					self.make_ducks(3, self.mode)
-					
 					self.switch_state("in")
-					
 				elif event.key == pygame.K_m:
 					self.mode = "medium"
-					
-					
 					self.make_ducks(3, self.mode)
-					
 					self.switch_state("in")
 	#==========================================================================
 	##==========================================================================
@@ -214,36 +184,26 @@ class Game:
 	
 	#initialize game
 	def init(self):
-	
 		self.music_player.play_sound("start_game")
 		self.beginning_screen()
-		
 		#main game loop
 		while(not self.game_states["quit"]):
-			
 			if self.game_states["beginning"] == True:
 				while self.game_states["beginning"]:
 					self.mouse_action_beginning()
 				#beginning state ----> mode selection / quit game
 				self.mode_selection_screen()
-
-		
 			elif self.game_states["modes"] == True:
 				self.music_player.play_sound("dog_laughing")
 				while self.game_states["modes"]:
 					self.select_mode()
 				#mode selection state ---> ingame state / quit game
 				self.ingame_screen()
-
-
-			
 			elif self.game_states["in"] == True:
 				self.music_player.play_sound("start_round")
 				#Delay move ducks for six seconds until sound ends.
 				time.sleep(6)
-				
 				self.make_ducks_visible()
-				
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
 					self.update_objects()
@@ -251,17 +211,11 @@ class Game:
 					self.clock.tick(20)
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()
-
-
-			
 			elif self.game_states["over"] == True:
 				while self.game_states["over"]:
 					self.mouse_action_game_over()
 				#game over state ----> mode selection / quit game
 				self.mode_selection_screen()
-			
-
-
 # self.render_Objects()
 #pygame.display.update()
 
@@ -281,8 +235,6 @@ class Game:
 			duck.move()
 
 
-
-
 	def make_ducks(self, how_many, mode):
 	
 		if(len(self.ducks) > 0):
@@ -298,9 +250,6 @@ class Game:
 	
 		return Duck(window, typeDuck)
 			
-
-		#def quit(self): 
-		#	return self.quit_game	
 
 
 	def make_ducks_visible(self):
