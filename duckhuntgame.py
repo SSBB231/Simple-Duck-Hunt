@@ -321,12 +321,12 @@ class Game:
 
 
 				#check if duck is shot
-	#def check_hit_duck(self, location):
+	def check_hit_duck(self, location):
 	
-	#if self.window.get_at(location) == mycolors.YELLOW:
-	###		return True
-	#	else:
-	#		return False
+	    if self.window.get_at(location) == mycolors.YELLOW:
+	        return True
+	    else:
+	        return False
 				
 	##==========================================================================
 			
