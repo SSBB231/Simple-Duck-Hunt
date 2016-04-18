@@ -42,7 +42,7 @@ class Game:
 	
 		self.num_duck = 3
 		#Ducks list.
-		self.ducks = []
+		self.duck = None
 		#Create the ducks for this game.
 		#Give this game a list of players to pick from.
 		self.players = {"P1": InteractivePlayer(), "R": Robot()}
@@ -90,10 +90,6 @@ class Game:
 	#Include: blue background, grass, "Duck: ", "Bullets: ", "Score: "
 	def ingame_screen(self):
 		self.window.fill(mycolors.LIGHT_BLUE)
-		
-		#Draw Ducks
-		self.render_objects()
-		
 		display = Display(self.window)
 		display.draw_grass()
 		display.text("Ducks: " + str(len(self.ducks)), int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
@@ -110,7 +106,14 @@ class Game:
 		display.text("Press M for Medium Mode"  , int(self.h*0.1), mycolors.BLACK, 1, int(self.h*0.6), True)
 		display.text("Press H for Hard Mode"	, int(self.h*0.1), mycolors.BLACK, 1, int(self.h*0.7), True)
 		pygame.display.update()
-		
+	
+	#draw duck
+	def render_objects(self):
+		self.duck.beDrawn()
+	#update location
+	def update_objects(self):
+		self.duck.move()
+	
 	##==========================================================================
 	##==========================================================================
 	#Events handling
@@ -179,8 +182,8 @@ class Game:
 	#==========================================================================
 	##==========================================================================
 
-	def clear_ducks(self):
-		self.ducks = []
+#	def clear_ducks(self):
+#		self.duck = None
 	
 	#initialize game
 	def init(self):
@@ -206,9 +209,15 @@ class Game:
 				self.make_ducks_visible()
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
-					self.update_objects()
-					self.ingame_screen()
-					self.clock.tick(20)
+					if self.num_duck <= 0:
+						self.switch_state("over")
+					else:
+						self.ingame_screen()
+						duck = Duck(self.window, self.mode)
+						self.render_objects()
+						self.update_objects()
+					
+						self.clock.tick(20)
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()
 			elif self.game_states["over"] == True:
@@ -229,39 +238,30 @@ class Game:
 
 		
 
-	#update objects
-	def update_objects(self):
-		for duck in self.ducks:
-			duck.move()
 
 
-	def make_ducks(self, how_many, mode):
+#	def make_ducks_visible(self, duck):
+#			self.duck.set_visible(True)
+
+#	def make_ducks(self, how_many, mode):
 	
-		if(len(self.ducks) > 0):
-			self.clear_ducks()
+#		if(len(self.ducks) > 0):
+#			self.clear_ducks()
 			
-		for i in range(how_many):
-			self.ducks.append(self.createDuck(self.window, mode))
-
-
-
-
-	def createDuck(self, window, typeDuck):
+#		for i in range(how_many):
+#			self.ducks.append(self.createDuck(self.window, mode))
+#def createDuck(self, window, typeDuck):
 	
-		return Duck(window, typeDuck)
+#		return Duck(window, typeDuck)
 			
 
 
-	def make_ducks_visible(self):
-		for duck in self.ducks:
-			duck.set_visible(True)
+
+
 			
 			
 	##==========================================================================
-	def render_objects(self):
 	
-		for duck in self.ducks:
-			duck.beDrawn()
 
 
 
