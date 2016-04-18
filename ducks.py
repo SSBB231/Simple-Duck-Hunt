@@ -48,18 +48,21 @@ class Duck:
 	#draw duck  
 	def beDrawn(self):
 		self.window.blit(self.img_duck, (self.x,self.y))
-		
-		
-	def was_hit(self, location):
 	
-		if(location == None):
-			pass
-		else:
-	
-			x, y = location
+	def move(self):
+		self.x += self.x_speed
+		self.y += self.y_speed
 		
-			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
-				return True
+#	def was_hit(self, location):
+	
+#		if(location == None):
+#			pass
+#		else:
+	
+#			x, y = location
+		
+#			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
+#				return True
 		
 	#when duck dies
 #	def die(self):
@@ -73,9 +76,7 @@ class Duck:
 #		width, height = self.window.get_size()		
 #		return True
 			
-	def move(self):
-		self.x += self.x_speed
-		self.y += self.y_speed
+
 		
 #		if(self.dead and self.wait_time > 0):
 #			self.wait_time -= 1
