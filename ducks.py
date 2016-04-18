@@ -44,13 +44,10 @@ class Duck:
 	def is_visible(self):
 		return self.visible
 		
-	def set_visible(self, visible):
-		self.visible = visible
 		
 	#draw duck  
 	def beDrawn(self):
-		if(self.visible):
-			self.window.blit(self.img_duck, (self.x,self.y))
+		self.window.blit(self.img_duck, (self.x,self.y))
 		
 		
 	def was_hit(self, location):
