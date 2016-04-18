@@ -45,7 +45,7 @@ class Duck:
 		self.dead = False
 		
 		self.visible = True
-		
+		self.round_timer = 100
 		self.wait_time = 20
 		
 	def is_dead(self):
@@ -73,9 +73,14 @@ class Duck:
 		self.img_duck = self.images[name]
 	
 	def move(self):
+		if(self.round_timer >= 0):
+			self.stay_on_screen()
+		else:
+			self.change_x_speed(10)
+			self.change_y_speed(-50)
 		self.x += self.x_speed
 		self.y += self.y_speed
-		
+		self.round_timer -= 1
 		if(self.dead and self.wait_time > 0):
 			self.wait_time -= 1
 			
@@ -115,7 +120,18 @@ class Duck:
 			return True
 		else:
 			return False
-			
+	
+	def stay_on_screen(self):
+		w = self.window.get_width()
+		h = self.window.get_height()
+		if self.y < 10:
+			self.y_speed *= -1
+		if self.x > (w-self.width):
+			self.x_speed *= -1
+		if self.y > h*0.7:
+			self.y_speed *= -1
+		if self.x < self.width:
+			self.x_speed *= -1		
 
 		
 #		if(self.dead and self.wait_time > 0):
