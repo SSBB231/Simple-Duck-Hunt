@@ -8,11 +8,13 @@ class Player(object):
 		#Initializes score to zero.
 		self.score = 0
 		self.name = "P"
+		
+		self.num_bullets = 3
 	
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
 	def shotAt(self):
-		return (-1, -1)
+		return (0,0)
 		
 	def update_score(self, points):
 		self.score += points
@@ -38,9 +40,6 @@ class InteractivePlayer(Player):
 		
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
-	
-	def shotAt(self, event):
-		return event.pos
 		
 	def update(self):
 		pass

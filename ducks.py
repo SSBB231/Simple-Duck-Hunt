@@ -4,14 +4,27 @@ import mycolors
 
 class Duck:
 	
-	def __init__(self, window, speed, pos):
-		self.x, self.y = pos
+	def __init__(self, window, mode):
 		
 		self.width = window.get_width()//10
 		self.height = self.width
 		
-		self.x_speed = speed
+		self.x = 0
+		self.y = window.get_height()*0.7
+		
+		self.x_speed = 0
 		self.y_speed = 0
+		
+		if(mode == "easy"):
+			self.x_speed = 7
+			self.y_speed = -3
+		elif(mode == "medium"):
+			self.x_speed = 15
+			self.y_speed = -7
+		elif(mode == "hard"):
+			self.x_speed = 20
+			self.y_speed = -10
+			
 		
 		self.window = window
 		
@@ -19,7 +32,7 @@ class Duck:
 		
 		self.dead = False
 		
-		self.visible = True
+		self.visible = False
 		
 		self.wait_time = 20
 		
@@ -28,6 +41,9 @@ class Duck:
 		
 	def is_visible(self):
 		return self.visible
+		
+	def set_visible(self, visible):
+		self.visible = visible
 		
 	#draw duck  
 	def beDrawn(self):

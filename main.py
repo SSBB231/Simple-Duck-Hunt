@@ -9,7 +9,7 @@ pygame.init()
 
 
 game = Game()
-game.start()
+game.init()
 
 #End pygame
 pygame.quit()
