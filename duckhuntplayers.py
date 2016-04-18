@@ -27,6 +27,16 @@ class Player(object):
 		
 	def __eq__(self , other):
 		self.name == other.name
+		
+	def get_num_bullets(self):
+		return self.num_bullets
+		
+	def get_score(self):
+		return self.score
+		
+	def clear_score(self):
+		self.score = 0
+	
 
 ##====================================================
 
@@ -41,6 +51,7 @@ class InteractivePlayer(Player):
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
 	def shot_at(self, event):
+		self.num_bullets -= 1
 		return event.pos
 		
 	def update(self):

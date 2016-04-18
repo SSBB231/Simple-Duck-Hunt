@@ -94,8 +94,8 @@ class Game:
 		display = Display(self.window)
 		display.draw_grass()
 		display.text("Ducks: " + str(self.num_ducks), int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
-		display.text("Bullets:", int(self.h*0.1), mycolors.BLACK, int(self.w*0.4), int(self.h*0.85), False)
-		display.text("Score:"  , int(self.h*0.1), mycolors.BLACK, int(self.w*0.7), int(self.h*0.85), False)
+		display.text("Bullets: " + str(self.player.get_num_bullets()), int(self.h*0.1), mycolors.BLACK, int(self.w*0.4), int(self.h*0.85), False)
+		display.text("Score: " + str(self.player.get_score())  , int(self.h*0.1), mycolors.BLACK, int(self.w*0.7), int(self.h*0.85), False)
 		pygame.display.update()
 		
 	#Display mode selection screen
@@ -174,6 +174,7 @@ class Game:
 				if(hit):
 					print("Hit duck")
 					self.duck.die()
+					self.player.update_score(500)
 				else:
 					print("Didn't hit duck")
 	
@@ -222,14 +223,20 @@ class Game:
 				self.music_player.play_sound("start_round")
 				
 				self.num_ducks = 3
+				
+				self.player.clear_score()
 
 				#Delay move ducks for six seconds until sound ends.
 				time.sleep(6)
 				
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
-					if self.num_ducks <= 0:
+					if self.num_ducks <= 0 || self.player.get_num_bullets() <= 0:
 						self.switch_state("over")
+						
+						if(self.player.get_score() >= 1500):
+							
+						
 					else:
 						self.ingame_screen()
 						if self.duck == None:
