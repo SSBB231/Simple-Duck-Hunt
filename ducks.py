@@ -41,26 +41,26 @@ class Duck:
 		
 		self.window = window
 		
-#		self.color = mycolors.YELLOW
 		
-#		self.dead = False
+		self.dead = False
 		
-#		self.visible = False
+		self.visible = True
 		
-#		self.wait_time = 20
+		self.wait_time = 20
 		
-#	def is_dead(self):
-#		return self.dead
+	def is_dead(self):
+		return self.dead
 		
-#	def is_visible(self):
-#		return self.visible
+	def is_visible(self):
+		return self.visible
 		
 		
 	#draw duck  
 	def beDrawn(self):
-		self.window.blit(self.img_duck, (self.x,self.y))
+		if(self.visible):
+			self.window.blit(self.img_duck, (self.x,self.y))
 		
-		self.change_animation()
+			self.change_animation()
 	
 	def change_animation(self):
 		if(self.img_duck == self.images["up"]):
@@ -74,6 +74,12 @@ class Duck:
 	def move(self):
 		self.x += self.x_speed
 		self.y += self.y_speed
+		
+		if(self.dead and self.wait_time > 0):
+			self.wait_time -= 1
+			
+		if(self.wait_time <= 0):
+			self.visible = False
 		
 #	def was_hit(self, location):
 	
@@ -94,9 +100,13 @@ class Duck:
 #		self.change_y_speed(20)
 		
 	#check if duck is on screen	
-#	def onScreen(self):
-#		width, height = self.window.get_size()		
-#		return True
+	def on_screen(self):
+		width, height = self.window.get_size()
+		
+		if((-self.width//2 < self.x < width+self.width//2) and (-self.height//2 < self.y < height+self.height//2)):
+			return True
+		else:
+			return False
 			
 
 		

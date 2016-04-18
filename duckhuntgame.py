@@ -113,6 +113,10 @@ class Game:
 	#update location
 	def update_objects(self):
 		self.duck.move()
+		
+		if(not self.duck.on_screen()):
+			self.duck = None
+		
 	#def make_duck_visible(self):
 	#	self.duck.set_visible(True)
 	##==========================================================================
