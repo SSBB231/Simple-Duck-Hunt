@@ -59,6 +59,9 @@ class InteractivePlayer(Player):
 		
 	def getName(self):
 		return self.name
+		
+	def set_bullets(self, bullets):
+		self.num_bullets = bullets
 
 ##====================================================
 

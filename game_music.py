@@ -13,6 +13,7 @@ class MusicPlayer:
 		self.sounds["falling"] = pygame.mixer.Sound("falling.wav")
 		self.sounds["lost_duck"] = pygame.mixer.Sound("game_over.wav")
 		self.sounds["dog_laughing"] = pygame.mixer.Sound("dog_laughing.wav")
+		self.sounds["game_over"] = pygame.mixer.Sound("game_over.wav")
 		
 		self.tune = self.sounds["start_game"]
   

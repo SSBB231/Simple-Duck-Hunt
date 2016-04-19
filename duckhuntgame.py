@@ -83,7 +83,10 @@ class Game:
 		self.window.fill(mycolors.LIGHT_BLUE)
 		display = Display(self.window)
 		display.draw_grass()
-		display.text("Game Over", int(self.h*0.2), mycolors.RED, 1, (self.h*0.8/2), True)
+		if(self.player.get_score() >= 1500):
+			display.text("YOU WIN!!!", int(self.h*0.2), mycolors.RED, 1, (self.h*0.8/2), True)
+		else:
+			display.text("Game Over", int(self.h*0.2), mycolors.RED, 1, (self.h*0.8/2), True)
 		display.draw_buttons("over")
 		pygame.display.update()
 		
@@ -218,6 +221,9 @@ class Game:
 				while self.game_states["modes"]:
 					self.select_mode()
 				#mode selection state ---> ingame state / quit game
+				
+				
+				pygame.display.update()
 				self.ingame_screen()
 			elif self.game_states["in"] == True:
 				self.music_player.play_sound("start_round")
@@ -225,17 +231,21 @@ class Game:
 				self.num_ducks = 3
 				
 				self.player.clear_score()
+				self.player.set_bullets(10)
 
 				#Delay move ducks for six seconds until sound ends.
 				time.sleep(6)
 				
 				while self.game_states["in"]:
 					self.mouse_action_ingame()
-					if self.num_ducks <= 0 || self.player.get_num_bullets() <= 0:
+					if self.num_ducks <= 0 or self.player.get_num_bullets() <= 0:
 						self.switch_state("over")
 						
 						if(self.player.get_score() >= 1500):
+							self.music_player.play_sound("end_game")
 							
+						else:
+							self.music_player.play_sound("game_over")
 						
 					else:
 						self.ingame_screen()
