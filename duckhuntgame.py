@@ -318,4 +318,4 @@ class Game:
 			
 
 	def random_duck_creator(self, mode):
-		return Duck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
+		return SquareDuck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)

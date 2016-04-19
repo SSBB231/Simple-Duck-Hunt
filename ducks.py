@@ -148,3 +148,18 @@ class Duck:
 		self.y_speed = speed
 		
 ##=========================================================
+
+class SquareDuck(Duck):
+	
+	def __init__(self, window, mode, x_pos):
+		Duck.__init__(self, window, mode, 136)
+		
+		self.change_y_speed(0)
+		self.y = window.get_height()//2
+		
+	def beDrawn(self):
+	
+		self.window.fill(mycolors.PURPLE, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+		Duck.beDrawn(self)
+		
+		
