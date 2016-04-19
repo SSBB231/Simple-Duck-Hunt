@@ -4,12 +4,12 @@ import mycolors
 import pygame
 class Duck:
 	
-	def __init__(self, window, mode):
+	def __init__(self, window, mode, x_pos):
 		
 		self.width = window.get_width()//10
 		self.height = self.width
 		
-		self.x = self.width
+		self.x = x_pos
 		self.y = window.get_height()*0.7
 		
 		self.x_speed = 0
@@ -29,14 +29,14 @@ class Duck:
 		self.img_duck = self.images["up"]
 		
 		if(mode == "easy"):
-			self.x_speed = 7
-			self.y_speed = -3
+			self.x_speed = 10
+			self.y_speed = -5
 		elif(mode == "medium"):
-			self.x_speed = 15
-			self.y_speed = -7
+			self.x_speed = 18
+			self.y_speed = -8
 		elif(mode == "hard"):
-			self.x_speed = 20
-			self.y_speed = -10
+			self.x_speed = 25
+			self.y_speed = -11
 			
 		
 		self.window = window

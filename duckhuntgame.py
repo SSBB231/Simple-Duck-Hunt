@@ -14,6 +14,7 @@ from display import *
 
 from game_music import MusicPlayer
 
+import random
 
 #Importing pygame.
 import pygame, time
@@ -230,10 +231,14 @@ class Game:
 				
 				self.num_ducks = 3
 				
+				self.duck = self.random_duck_creator(self.mode, )
+				
 				self.player.clear_score()
 				self.player.set_bullets(10)
 
 				#Delay move ducks for six seconds until sound ends.
+				pygame.display.update()
+
 				time.sleep(6)
 				
 				while self.game_states["in"]:
@@ -250,7 +255,7 @@ class Game:
 					else:
 						self.ingame_screen()
 						if self.duck == None:
-							self.duck = Duck(self.window, self.mode)
+							self.duck = self.random_duck_creator(self.mode)
 							self.num_ducks -= 1
 						self.render_objects()
 						self.update_objects()
@@ -311,3 +316,6 @@ class Game:
 				
 	##==========================================================================
 			
+
+	def random_duck_creator(self, mode):
+		return Duck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
