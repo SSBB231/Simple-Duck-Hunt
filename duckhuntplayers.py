@@ -1,3 +1,5 @@
+import pygame
+
 #This module contains all the player classes and their respecsctive helper classes.
 ##====================================================
 class Player(object):
@@ -19,7 +21,7 @@ class Player(object):
 	#the player shot at the screen.
 	def shot_at(self, event):
 		x, y = event.pos
-		self.window.blit(self.shot_img, x - 300, y - 300)
+		self.window.blit(self.shot_img, (x - 300//2, y - 300//2))
 		return (0,0)
 		
 	def update_score(self, points):
@@ -50,13 +52,16 @@ class Player(object):
 class InteractivePlayer(Player):
 	
 	#Player class constructor
-	def __init__(self):
-		Player.__init__(self)
+	def __init__(self, window):
+		Player.__init__(self, window)
 		self.name = "P1"
 		
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
 	def shot_at(self, event):
+	
+		Player.shot_at(self, event)
+	
 		self.num_bullets -= 1
 		return event.pos
 		
@@ -75,11 +80,14 @@ class InteractivePlayer(Player):
 #Class that represents the robot that will play as this game's player.
 class Robot(Player):
 	
-	def __init__(self):
-		Player.__init__(self)
+	def __init__(self, window):
+		Player.__init__(self, window)
 		self.name = "R"
 		
 	def shot_at(self):
+	
+		Player.shot_at(self, event)
+	
 		return (0,0)
 		
 	def update():
