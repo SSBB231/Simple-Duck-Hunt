@@ -19,6 +19,16 @@ import random
 #Importing pygame.
 import pygame, time
 
+class MouseAdornment:
+	
+	def __init__(self):
+		
+		self.scope = pygame.image.load("scope.png")
+		
+	def be_drawn(self, window):
+		x, y = pygame.mouse.get_pos()
+		window.blit(self.scope, (x-178//2, y-178//2))
+
 class Game:
 	##==========================================================================
 	##==========================================================================
@@ -32,13 +42,13 @@ class Game:
 		#Create info object for screen resolution and other info.
 		self.info = pygame.display.Info()
 		#set window
-		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h), flags = pygame.DOUBLEBUF)
+		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h))
 		
 			#window size for convinience
 		self.w = self.window.get_width()
 		self.h = self.window.get_height()
 		
-		self.background_color = mycolors.BLACK
+		self.background_color = mycolors.LIGHT_BLUE
 
 		self.mode = None
 		
@@ -51,6 +61,8 @@ class Game:
 		#Give this game a list of players to pick from.
 		self.players = {"P1": InteractivePlayer(), "R": Robot()}
 		self.player = self.players["P1"]
+		
+		self.mouse = MouseAdornment()
 
 	##==========================================================================
 	##==========================================================================
@@ -123,6 +135,9 @@ class Game:
 	#draw duck
 	def render_objects(self):
 		self.duck.beDrawn()
+		
+		self.mouse.be_drawn(self.window)
+		
 	#update location
 	def update_objects(self):
 		self.duck.move()
@@ -252,6 +267,8 @@ class Game:
 
 				#Delay move ducks for six seconds until sound ends.
 				pygame.display.update()
+				
+				pygame.mouse.set_visible(False)
 
 				time.sleep(6)
 				
@@ -275,8 +292,12 @@ class Game:
 						self.update_objects()
 						pygame.display.update()
 						self.clock.tick(20)
+						
+				pygame.mouse.set_visible(True)
+				
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()
+				
 			elif self.game_states["over"] == True:
 				while self.game_states["over"]:
 					self.mouse_action_game_over()
@@ -315,6 +336,7 @@ class Game:
 			
 			
 	##==========================================================================
+	
 	
 
 

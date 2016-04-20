@@ -21,10 +21,16 @@ class Duck:
 		down = pygame.image.load("down.gif")
 		down = pygame.transform.scale(down, (self.width,self.height))
 		
+		up_left = pygame.image.load("up_left.gif")
+		up_left = pygame.transform.scale(up_left, (self.width,self.height))
+		
+		down_left = pygame.image.load("down_left.gif")
+		down_left = pygame.transform.scale(down_left, (self.width,self.height))
+		
 		deadimg = pygame.image.load("dead.png")
 		deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
 		
-		self.images = {"up": up, "down": down, "dead": deadimg}
+		self.images = {"up": up, "down": down, "dead": deadimg, "up_left": up_left, "down_left": down_left}
 		
 		self.img_duck = self.images["up"]
 		
@@ -64,10 +70,17 @@ class Duck:
 				self.change_animation()
 	
 	def change_animation(self):
-		if(self.img_duck == self.images["up"]):
-			self.change_image("down")
+		
+		if(self.x_speed >= 0):
+			if(self.img_duck == self.images["up"]):
+				self.change_image("down")
+			else:
+				self.change_image("up")
 		else:
-			self.change_image("up")
+			if(self.img_duck == self.images["up_left"]):
+				self.change_image("down_left")
+			else:
+				self.change_image("up_left")
 		
 	def change_image(self, name):
 		self.img_duck = self.images[name]
