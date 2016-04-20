@@ -158,7 +158,10 @@ class SquareDuck(Duck):
 		self.y = window.get_height()//2
 		
 	def beDrawn(self):
-		self.window.fill(mycolors.PURPLE, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+		
+		if(not self.dead):
+			self.window.fill(mycolors.PURPLE, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
 		Duck.beDrawn(self)
+		
 		
 		

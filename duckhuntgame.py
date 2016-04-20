@@ -32,11 +32,13 @@ class Game:
 		#Create info object for screen resolution and other info.
 		self.info = pygame.display.Info()
 		#set window
-		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h))
+		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h), flags = pygame.DOUBLEBUF)
 		
 			#window size for convinience
 		self.w = self.window.get_width()
 		self.h = self.window.get_height()
+		
+		self.background_color = mycolors.BLACK
 
 		self.mode = None
 		
@@ -56,6 +58,12 @@ class Game:
 		pass
 	##==========================================================================
 	##==========================================================================
+	
+	def change_background(self):
+		if(self.background_color == mycolors.BLACK):
+			self.background_color = mycolors.LIGHT_BLUE
+		else:
+			self.background_color = mycolors.BLACK
 	
 	##==========================================================================
 	##==========================================================================
@@ -94,7 +102,7 @@ class Game:
 	#Display in game screen
 	#Include: blue background, grass, "Duck: ", "Bullets: ", "Score: "
 	def ingame_screen(self):
-		self.window.fill(mycolors.LIGHT_BLUE)
+		self.window.fill(self.background_color)
 		display = Display(self.window)
 		display.draw_grass()
 		display.text("Ducks: " + str(self.num_ducks), int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
@@ -170,9 +178,15 @@ class Game:
 				#click start new game button
 				if event.key == pygame.K_e:
 					self.switch_state("over")
+				elif event.key == pygame.K_b:
+					self.change_background()
 			if(event.type == pygame.MOUSEBUTTONDOWN):
 				self.music_player.play_sound("shot")
+				
 				locationWhereShot = self.player.shot_at(event)
+				
+				
+				
 				hit = self.check_hit_duck(locationWhereShot)
 				
 				if(hit):
