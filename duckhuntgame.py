@@ -24,6 +24,7 @@ class MouseAdornment:
 	def __init__(self):
 		
 		self.scope = pygame.image.load("scope.png")
+		self.scope = self.scope.convert_alpha()
 		
 	def be_drawn(self, window):
 		x, y = pygame.mouse.get_pos()
@@ -294,6 +295,7 @@ class Game:
 						self.clock.tick(20)
 						
 				pygame.mouse.set_visible(True)
+				self.duck = None
 				
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()

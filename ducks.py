@@ -17,18 +17,23 @@ class Duck:
 		
 		up = pygame.image.load("up.gif")
 		up = pygame.transform.scale(up, (self.width,self.height))
+		up = up.convert_alpha()
 		
 		down = pygame.image.load("down.gif")
 		down = pygame.transform.scale(down, (self.width,self.height))
+		down = down.convert_alpha()
 		
 		up_left = pygame.image.load("up_left.gif")
 		up_left = pygame.transform.scale(up_left, (self.width,self.height))
+		up_left = up_left.convert_alpha()
 		
 		down_left = pygame.image.load("down_left.gif")
 		down_left = pygame.transform.scale(down_left, (self.width,self.height))
+		down_left = down_left.convert_alpha()
 		
 		deadimg = pygame.image.load("dead.png")
 		deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
+		deadimg = deadimg.convert_alpha()
 		
 		self.images = {"up": up, "down": down, "dead": deadimg, "up_left": up_left, "down_left": down_left}
 		
@@ -106,7 +111,7 @@ class Duck:
 		else:
 			x, y = location
 			
-			print(location, (self.x, self.y), (self.width, self.height))
+			#print(location, (self.x, self.y), (self.width, self.height))
 			
 			
 			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
@@ -117,7 +122,7 @@ class Duck:
 		
 	#when duck dies
 	def die(self):
-		print("Calling Die")
+		#print("Calling Die")
 		
 		self.change_image("dead")
 		
