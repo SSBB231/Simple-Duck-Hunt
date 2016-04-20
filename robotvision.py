@@ -1,14 +1,24 @@
 import pygame
 import pygame.camera
 
-class Robot_Vision:
-  
-  def __init__():
-    
-    init()
-    
-    camlist = list_cameras()
-    
-    if(camlist):
-      cam = Camera(camlist[0], (640, 480))
-    
+from pygame.locals import *
+
+pygame.camera.init()
+
+class RobotEye:
+	
+	def __init__(self):
+		
+		camlist = pygame.camera.list_cameras()
+		
+		self.cam = None
+		
+		if(camlist):
+			self.cam = pygame.camera.Camera(camlist[0], (640, 480))
+			
+			self.cam.start()
+			
+			print(cam.get_controls())
+			
+	def get_vision(self):
+		return self.cam.get_image()
