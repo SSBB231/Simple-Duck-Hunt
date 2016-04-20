@@ -59,7 +59,7 @@ class Game:
 		self.duck = None
 		#Create the ducks for this game.
 		#Give this game a list of players to pick from.
-		self.players = {"P1": InteractivePlayer(), "R": Robot()}
+		self.players = {"P1": InteractivePlayer(self.window), "R": Robot(self.window)}
 		self.player = self.players["P1"]
 		
 		self.mouse = MouseAdornment()

@@ -3,17 +3,23 @@
 class Player(object):
 	
 	#Player class constructor
-	def __init__(self):
+	def __init__(self, window):
 		
 		#Initializes score to zero.
 		self.score = 0
 		self.name = "P"
 		
 		self.num_bullets = 3
+		
+		self.window = window
+		
+		self.shot_img = pygame.image.load("shot.png")
 	
 	#Returns a 2-tuple with the location at which
 	#the player shot at the screen.
-	def shot_at(self):
+	def shot_at(self, event):
+		x, y = event.pos
+		self.window.blit(self.shot_img, x - 300, y - 300)
 		return (0,0)
 		
 	def update_score(self, points):
