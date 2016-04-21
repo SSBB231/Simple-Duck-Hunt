@@ -1,12 +1,14 @@
 import pygame
 import pygame.camera
 
+import mycolors
+
 from pygame.locals import *
 
 pygame.init()
 pygame.camera.init()
 
-class Capture(object):
+class RobotEye(object):
     def __init__(self):
         self.size = (640,480)
         # create a display surface. standard pygame stuff
@@ -16,7 +18,7 @@ class Capture(object):
         self.clist = pygame.camera.list_cameras()
         if not self.clist:
             raise ValueError("Sorry, no cameras detected.")
-        self.cam = pygame.camera.Camera(self.clist[0], (640, 480))
+        self.cam = pygame.camera.Camera(self.clist[0], self.size)
         self.cam.start()
 
         # create a surface to capture to.  for performance purposes
@@ -30,9 +32,18 @@ class Capture(object):
         if self.cam.query_image():
             self.snapshot = self.cam.get_image(self.snapshot)
 
-        # blit it to the display surface.  simple!
-        self.display.blit(self.snapshot, (0,0))
-        pygame.display.flip()
+        # threshold against the color we got before
+            mask = pygame.mask.from_threshold(self.snapshot, mycolors.PURPLE, (30, 30, 30))
+            self.display.blit(self.snapshot,(0,0))
+        # keep only the largest blob of that color
+            connected = mask.connected_component()
+        # make sure the blob is big enough that it isn't just noise
+            if mask.count() > 100:
+            # find the center of the blob
+                coord = mask.centroid()
+            # draw a circle with size variable on the size of the blob
+                pygame.draw.circle(self.display, (0,255,0), coord, max(min(50,mask.count()/400),5))
+            pygame.display.flip()
 
     def main(self):
         going = True
@@ -48,7 +59,7 @@ class Capture(object):
 			
 			
 			
-app = Capture()
+app = RobotEye()
 app.main()
 
 pygame.camera.quit()
