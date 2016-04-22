@@ -40,7 +40,7 @@ class Duck:
 		self.img_duck = self.images["up"]
 		
 		if(mode == "easy"):
-			self.x_speed = 10
+			self.x_speed = 2
 			self.y_speed = -5
 		elif(mode == "medium"):
 			self.x_speed = 18
@@ -56,7 +56,7 @@ class Duck:
 		self.dead = False
 		
 		self.visible = True
-		self.round_timer = 100
+		self.round_timer = 1000
 		self.wait_time = 20
 		
 	def is_dead(self):
@@ -178,7 +178,7 @@ class SquareDuck(Duck):
 	def beDrawn(self):
 		
 		if(not self.dead):
-			self.window.fill(mycolors.PURPLE, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+			self.window.fill(mycolors.BLACK, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
 		Duck.beDrawn(self)
 		
 		

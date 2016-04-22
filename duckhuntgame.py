@@ -16,6 +16,8 @@ from game_music import MusicPlayer
 
 import random
 
+from robotvision import RobotEye
+
 #Importing pygame.
 import pygame, time
 
@@ -65,6 +67,8 @@ class Game:
 		
 		self.mouse = MouseAdornment()
 
+		self.robot_eye = RobotEye(self.window)
+
 	##==========================================================================
 	##==========================================================================
 	def load_cursor(self):
@@ -76,7 +80,7 @@ class Game:
 		if(self.background_color == mycolors.BLACK):
 			self.background_color = mycolors.LIGHT_BLUE
 		else:
-			self.background_color = mycolors.BLACK
+			self.background_color = mycolors.WHITE
 	
 	##==========================================================================
 	##==========================================================================
@@ -118,9 +122,9 @@ class Game:
 		self.window.fill(self.background_color)
 		display = Display(self.window)
 		display.draw_grass()
-		display.text("Ducks: " + str(self.num_ducks), int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
-		display.text("Bullets: " + str(self.player.get_num_bullets()), int(self.h*0.1), mycolors.BLACK, int(self.w*0.4), int(self.h*0.85), False)
-		display.text("Score: " + str(self.player.get_score())  , int(self.h*0.1), mycolors.BLACK, int(self.w*0.7), int(self.h*0.85), False)
+		display.text("Ducks: " + str(self.num_ducks), int(self.h*0.1), mycolors.WHITE, int(self.w*0.1), int(self.h*0.85), False)
+		display.text("Bullets: " + str(self.player.get_num_bullets()), int(self.h*0.1), mycolors.WHITE, int(self.w*0.4), int(self.h*0.85), False)
+		display.text("Score: " + str(self.player.get_score())  , int(self.h*0.1), mycolors.WHITE, int(self.w*0.7), int(self.h*0.85), False)
 		pygame.display.update()
 		
 	#Display mode selection screen
@@ -136,7 +140,7 @@ class Game:
 	#draw duck
 	def render_objects(self):
 		self.duck.beDrawn()
-		
+		self.robot_eye.be_drawn()
 		self.mouse.be_drawn(self.window)
 		
 	#update location
@@ -273,8 +277,9 @@ class Game:
 
 				time.sleep(6)
 				
+				#MAIN GAME LOOP===============================================================
 				while self.game_states["in"]:
-					self.mouse_action_ingame()
+					
 					if self.num_ducks <= 0 or self.player.get_num_bullets() <= 0:
 						self.switch_state("over")
 						
@@ -285,6 +290,8 @@ class Game:
 							self.music_player.play_sound("game_over")
 						
 					else:
+						self.robot_eye.get_snapshot()
+						self.mouse_action_ingame()
 						self.ingame_screen()
 						if self.duck == None:
 							self.duck = self.random_duck_creator(self.mode)
@@ -356,4 +363,4 @@ class Game:
 			
 
 	def random_duck_creator(self, mode):
-		return SquareDuck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
+		return Duck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
