@@ -35,7 +35,7 @@ class RobotEye(object):
             self.snapshot = self.cam.get_image(self.snapshot)
 
         # threshold against the color we got before
-            self.mask = pygame.mask.from_threshold(self.snapshot, mycolors.BLACK, (50, 50, 50))
+            self.mask = pygame.mask.from_threshold(self.snapshot, mycolors.WHITE, (30, 30, 30))
             self.display.blit(self.snapshot,(0,0))
         # keep only the largest blob of that color
             connected = self.mask.connected_component()

@@ -51,7 +51,7 @@ class Game:
 		self.w = self.window.get_width()
 		self.h = self.window.get_height()
 		
-		self.background_color = mycolors.LIGHT_BLUE
+		self.background_color = mycolors.BLUE
 
 		self.mode = None
 		
@@ -78,7 +78,7 @@ class Game:
 	
 	def change_background(self):
 		if(self.background_color == mycolors.BLACK):
-			self.background_color = mycolors.LIGHT_BLUE
+			self.background_color = mycolors.BLUE
 		else:
 			self.background_color = mycolors.WHITE
 	
@@ -363,4 +363,4 @@ class Game:
 			
 
 	def random_duck_creator(self, mode):
-		return Duck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
+		return SquareDuck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
