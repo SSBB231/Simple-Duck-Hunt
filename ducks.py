@@ -125,6 +125,8 @@ class Duck:
 	#when duck dies
 	def die(self):
 		#print("Calling Die")
+
+		self.dead = True
 		
 		self.change_image("dead")
 		
@@ -174,7 +176,7 @@ class Duck:
 class SquareDuck(Duck):
 	
 	def __init__(self, window, mode, x_pos, color):
-		Duck.__init__(self, window, mode, window.get_width()//7, color)
+		Duck.__init__(self, window, mode, x_pos, color)
 		
 		#self.change_y_speed(0)
 		self.y = window.get_height()//2

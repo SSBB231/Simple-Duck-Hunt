@@ -60,6 +60,8 @@ class RobotEye(object):
 
     def calibrate(self):
 
+	self.target_color = mycolors.PURPLE
+
 	target_color = None
 
 	got_color = False

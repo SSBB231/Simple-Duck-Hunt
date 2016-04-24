@@ -62,14 +62,16 @@ class Game:
 		self.duck = None
 		#Create the ducks for this game.
 		#Give this game a list of players to pick from.
-		self.players = {"P1": InteractivePlayer(self.window), "R": Robot(self.window)}
-		self.player = self.players["P1"]
+		
 		
 		self.mouse = MouseAdornment()
 
 		self.color_tuples = []
 
 		self.robot_eye = RobotEye(self.window)
+
+		self.players = {"P1": InteractivePlayer(self.window), "R": Robot(self.window, self.robot_eye)}
+		self.player = self.players["P1"]
 
 	def calibrate_target_color(self):
 		
@@ -86,7 +88,7 @@ class Game:
 		if(self.background_color == mycolors.BLACK):
 			self.background_color = mycolors.LIGHT_BLUE
 		else:
-			self.background_color = mycolors.WHITE
+			self.background_color = mycolors.BLUE
 	
 	##==========================================================================
 	##==========================================================================
@@ -156,6 +158,8 @@ class Game:
 		
 		if(not self.duck.on_screen()):
 			self.duck = None
+
+		self.player.move()
 		
 	#def make_duck_visible(self):
 	#	self.duck.set_visible(True)
@@ -195,7 +199,13 @@ class Game:
 				#click quit button
 				elif self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.7 > cur[1] > self.h*0.6:
 					self.switch_state("quit")
-				
+
+	def switch_players(self):
+		if(self.player != self.players["R"]):
+			self.player = self.players["R"]
+		else:
+			self.player = self.players["P1"]
+			
 	#Possible events: quit, shoot
 	def mouse_action_ingame(self):
 		for event in pygame.event.get():
@@ -206,9 +216,12 @@ class Game:
 				if event.key == pygame.K_e:
 					self.switch_state("over")
 				elif event.key == pygame.K_b:
-					self.change_background()				
+					self.change_background()
+				elif event.key == pygame.K_s:
+					self.switch_players()				
 					
 			if(event.type == pygame.MOUSEBUTTONDOWN):
+
 				self.music_player.play_sound("shot")
 				
 				locationWhereShot = self.player.shot_at(event)
@@ -303,6 +316,24 @@ class Game:
 					else:
 						self.robot_eye.get_snapshot()
 						self.mouse_action_ingame()
+
+						if(self.player == self.players["R"]):
+
+							location = self.player.get_location()
+
+							if(self.duck != None and (not self.duck.is_dead())):
+
+								if(self.check_hit_duck(location)):
+									self.music_player.play_sound("shot")
+
+									self.player.shot_at(location)
+				
+									print("Hit duck")
+									self.duck.die()
+									self.player.update_score(500)
+								else:
+									print("Didn't hit duck")
+
 						self.ingame_screen()
 						if self.duck == None:
 							self.duck = self.random_duck_creator(self.mode)
@@ -367,6 +398,10 @@ class Game:
 
 				#check if duck is shot
 	def check_hit_duck(self, location):
+		
+		if(self.duck == None):
+			return False
+
 		return self.duck.was_hit(location)
 		
 				
