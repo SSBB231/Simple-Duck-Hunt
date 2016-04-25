@@ -208,13 +208,14 @@ class Game:
 					self.select_mode()
 				#mode selection state ---> ingame state / quit game
 				pygame.display.update()
-				self.ingame_screen()
-			elif self.game_states["in"] == True:
-				self.music_player.play_sound("start_round")
-				self.num_ducks = 3
-				self.duck = self.random_duck_creator(self.mode)
 				self.player.clear_score()
+				self.num_ducks = 3
 				self.player.set_bullets(10)
+				self.ingame_screen()
+
+			elif self.game_states["in"] == True:
+				self.duck = self.random_duck_creator(self.mode)
+				self.music_player.play_sound("start_round")
 				#Delay move ducks for six seconds until sound ends.
 				pygame.display.update()
 				time.sleep(6)
