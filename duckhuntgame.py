@@ -16,8 +16,21 @@ from game_music import MusicPlayer
 
 import random
 
+from robotvision import RobotEye
+
 #Importing pygame.
 import pygame, time
+
+class MouseAdornment:
+	
+	def __init__(self):
+		
+		self.scope = pygame.image.load("scope.png")
+		self.scope = self.scope.convert_alpha()
+		
+	def be_drawn(self, window):
+		x, y = pygame.mouse.get_pos()
+		window.blit(self.scope, (x-178//2, y-178//2))
 
 class Game:
 	##==========================================================================
@@ -37,6 +50,8 @@ class Game:
 			#window size for convinience
 		self.w = self.window.get_width()
 		self.h = self.window.get_height()
+		
+		self.background_color = mycolors.LIGHT_BLUE
 
 		self.mode = None
 		
@@ -47,15 +62,33 @@ class Game:
 		self.duck = None
 		#Create the ducks for this game.
 		#Give this game a list of players to pick from.
-		self.players = {"P1": InteractivePlayer(), "R": Robot()}
+		
+		
+		self.mouse = MouseAdornment()
+
+		self.color_tuples = []
+
+		self.robot_eye = RobotEye(self.window)
+
+		self.players = {"P1": InteractivePlayer(self.window), "R": Robot(self.window, self.robot_eye)}
 		self.player = self.players["P1"]
 
+	def calibrate_target_color(self):
+		
+		self.robot_eye.calibrate()
+		
 	##==========================================================================
 	##==========================================================================
 	def load_cursor(self):
 		pass
 	##==========================================================================
 	##==========================================================================
+	
+	def change_background(self):
+		if(self.background_color == mycolors.BLACK):
+			self.background_color = mycolors.LIGHT_BLUE
+		else:
+			self.background_color = mycolors.BLUE
 	
 	##==========================================================================
 	##==========================================================================
@@ -94,7 +127,7 @@ class Game:
 	#Display in game screen
 	#Include: blue background, grass, "Duck: ", "Bullets: ", "Score: "
 	def ingame_screen(self):
-		self.window.fill(mycolors.LIGHT_BLUE)
+		self.window.fill(self.background_color)
 		display = Display(self.window)
 		display.draw_grass()
 		display.text("Ducks: " + str(self.num_ducks), int(self.h*0.1), mycolors.BLACK, int(self.w*0.1), int(self.h*0.85), False)
@@ -110,17 +143,23 @@ class Game:
 		display.text("Press E for Easy Mode"	, int(self.h*0.1), mycolors.BLACK, 1, int(self.h*0.5), True)
 		display.text("Press M for Medium Mode"  , int(self.h*0.1), mycolors.BLACK, 1, int(self.h*0.6), True)
 		display.text("Press H for Hard Mode"	, int(self.h*0.1), mycolors.BLACK, 1, int(self.h*0.7), True)
+		display.text("Press C to Calibrate Camera"	, int(self.h*0.1), mycolors.BLACK, 1, int(self.h*0.8), True)
 		pygame.display.update()
 	
 	#draw duck
 	def render_objects(self):
 		self.duck.beDrawn()
+		self.robot_eye.be_drawn()
+		self.mouse.be_drawn(self.window)
+		
 	#update location
 	def update_objects(self):
 		self.duck.move()
 		
 		if(not self.duck.on_screen()):
 			self.duck = None
+
+		self.player.move()
 		
 	#def make_duck_visible(self):
 	#	self.duck.set_visible(True)
@@ -160,7 +199,13 @@ class Game:
 				#click quit button
 				elif self.w*0.6 > cur[0] > self.w*0.4 and self.h*0.7 > cur[1] > self.h*0.6:
 					self.switch_state("quit")
-				
+
+	def switch_players(self):
+		if(self.player != self.players["R"]):
+			self.player = self.players["R"]
+		else:
+			self.player = self.players["P1"]
+			
 	#Possible events: quit, shoot
 	def mouse_action_ingame(self):
 		for event in pygame.event.get():
@@ -170,9 +215,21 @@ class Game:
 				#click start new game button
 				if event.key == pygame.K_e:
 					self.switch_state("over")
+				elif event.key == pygame.K_b:
+					self.change_background()
+				elif event.key == pygame.K_s:
+					self.switch_players()
+				elif event.key == pygame.K_j:
+					self.robot_eye.change_brightness()	
+					
 			if(event.type == pygame.MOUSEBUTTONDOWN):
+
 				self.music_player.play_sound("shot")
+				
 				locationWhereShot = self.player.shot_at(event)
+				
+				
+				
 				hit = self.check_hit_duck(locationWhereShot)
 				
 				if(hit):
@@ -200,6 +257,8 @@ class Game:
 					self.mode = "medium"
 					#self.make_ducks(3, self.mode)
 					self.switch_state("in")
+				elif event.key == pygame.K_c:
+					calibrated = self.calibrate_target_color()
 	#==========================================================================
 	##==========================================================================
 
@@ -220,6 +279,7 @@ class Game:
 			elif self.game_states["modes"] == True:
 				self.music_player.play_sound("dog_laughing")
 				while self.game_states["modes"]:
+					self.mode_selection_screen()
 					self.select_mode()
 				#mode selection state ---> ingame state / quit game
 				
@@ -231,18 +291,22 @@ class Game:
 				
 				self.num_ducks = 3
 				
-				self.duck = self.random_duck_creator(self.mode, )
+				self.duck = self.random_duck_creator(self.mode)
 				
 				self.player.clear_score()
 				self.player.set_bullets(10)
 
 				#Delay move ducks for six seconds until sound ends.
-				pygame.display.update()
+				self.ingame_screen()
+				
+				pygame.mouse.set_visible(False)
+				pygame.mouse.set_pos((0, 0))
 
 				time.sleep(6)
 				
+				#MAIN GAME LOOP===============================================================
 				while self.game_states["in"]:
-					self.mouse_action_ingame()
+					
 					if self.num_ducks <= 0 or self.player.get_num_bullets() <= 0:
 						self.switch_state("over")
 						
@@ -253,6 +317,26 @@ class Game:
 							self.music_player.play_sound("game_over")
 						
 					else:
+						self.robot_eye.get_snapshot()
+						self.mouse_action_ingame()
+
+						if(self.player == self.players["R"]):
+
+							location = self.player.get_location()
+
+							if(self.duck != None and (not self.duck.is_dead())):
+
+								if(self.check_hit_duck(location)):
+									self.music_player.play_sound("shot")
+
+									self.player.shot_at(location)
+				
+									print("Hit duck")
+									self.duck.die()
+									self.player.update_score(500)
+								else:
+									print("Didn't hit duck")
+
 						self.ingame_screen()
 						if self.duck == None:
 							self.duck = self.random_duck_creator(self.mode)
@@ -261,8 +345,13 @@ class Game:
 						self.update_objects()
 						pygame.display.update()
 						self.clock.tick(20)
+						
+				pygame.mouse.set_visible(True)
+				self.duck = None
+				
 				#in game state   ----> game over state / quit game
 				self.game_over_screen()
+				
 			elif self.game_states["over"] == True:
 				while self.game_states["over"]:
 					self.mouse_action_game_over()
@@ -302,6 +391,7 @@ class Game:
 			
 	##==========================================================================
 	
+	
 
 
 
@@ -311,6 +401,10 @@ class Game:
 
 				#check if duck is shot
 	def check_hit_duck(self, location):
+		
+		if(self.duck == None):
+			return False
+
 		return self.duck.was_hit(location)
 		
 				
@@ -318,4 +412,4 @@ class Game:
 			
 
 	def random_duck_creator(self, mode):
-		return Duck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + 136)
+		return SquareDuck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + self.window.get_width()//7, self.robot_eye.target_color)

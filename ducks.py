@@ -4,9 +4,9 @@ import mycolors
 import pygame
 class Duck:
 	
-	def __init__(self, window, mode, x_pos):
+	def __init__(self, window, mode, x_pos, color):
 		
-		self.width = window.get_width()//10
+		self.width = window.get_width()//7
 		self.height = self.width
 		
 		self.x = x_pos
@@ -17,19 +17,30 @@ class Duck:
 		
 		up = pygame.image.load("up.gif")
 		up = pygame.transform.scale(up, (self.width,self.height))
+		up = up.convert_alpha()
 		
 		down = pygame.image.load("down.gif")
 		down = pygame.transform.scale(down, (self.width,self.height))
+		down = down.convert_alpha()
+		
+		up_left = pygame.image.load("up_left.gif")
+		up_left = pygame.transform.scale(up_left, (self.width,self.height))
+		up_left = up_left.convert_alpha()
+		
+		down_left = pygame.image.load("down_left.gif")
+		down_left = pygame.transform.scale(down_left, (self.width,self.height))
+		down_left = down_left.convert_alpha()
 		
 		deadimg = pygame.image.load("dead.png")
 		deadimg = pygame.transform.scale(deadimg, (self.width,self.height))
+		deadimg = deadimg.convert_alpha()
 		
-		self.images = {"up": up, "down": down, "dead": deadimg}
+		self.images = {"up": up, "down": down, "dead": deadimg, "up_left": up_left, "down_left": down_left}
 		
 		self.img_duck = self.images["up"]
 		
 		if(mode == "easy"):
-			self.x_speed = 10
+			self.x_speed = 2
 			self.y_speed = -5
 		elif(mode == "medium"):
 			self.x_speed = 18
@@ -45,8 +56,10 @@ class Duck:
 		self.dead = False
 		
 		self.visible = True
-		self.round_timer = 100
+		self.round_timer = 1000
 		self.wait_time = 20
+
+		self.color = color
 		
 	def is_dead(self):
 		return self.dead
@@ -64,10 +77,17 @@ class Duck:
 				self.change_animation()
 	
 	def change_animation(self):
-		if(self.img_duck == self.images["up"]):
-			self.change_image("down")
+		
+		if(self.x_speed >= 0):
+			if(self.img_duck == self.images["up"]):
+				self.change_image("down")
+			else:
+				self.change_image("up")
 		else:
-			self.change_image("up")
+			if(self.img_duck == self.images["up_left"]):
+				self.change_image("down_left")
+			else:
+				self.change_image("up_left")
 		
 	def change_image(self, name):
 		self.img_duck = self.images[name]
@@ -93,7 +113,7 @@ class Duck:
 		else:
 			x, y = location
 			
-			print(location, (self.x, self.y), (self.width, self.height))
+			#print(location, (self.x, self.y), (self.width, self.height))
 			
 			
 			if((self.x-self.width//2 <= x <= self.x+self.width//2) and (self.y-self.height//2 <= y <= self.y+self.height//2)):
@@ -104,13 +124,17 @@ class Duck:
 		
 	#when duck dies
 	def die(self):
-		print("Calling Die")
+		#print("Calling Die")
+
+		self.dead = True
 		
 		self.change_image("dead")
 		
 		self.dead = True
 		self.change_x_speed(0)
 		self.change_y_speed(20)
+
+		self.round_timer = 20
 		
 	#check if duck is on screen	
 	def on_screen(self):
@@ -148,3 +172,20 @@ class Duck:
 		self.y_speed = speed
 		
 ##=========================================================
+
+class SquareDuck(Duck):
+	
+	def __init__(self, window, mode, x_pos, color):
+		Duck.__init__(self, window, mode, x_pos, color)
+		
+		#self.change_y_speed(0)
+		self.y = window.get_height()//2
+		
+	def beDrawn(self):
+		
+		if(not self.dead):
+			self.window.fill(self.color, rect = [self.x-self.width//2, self.y-self.height//2, self.width, self.height])
+		Duck.beDrawn(self)
+		
+		
+		
