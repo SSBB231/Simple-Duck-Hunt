@@ -52,14 +52,13 @@ class Duck:
 		
 		self.window = window
 		
+		self.color = color
 		
 		self.dead = False
 		
 		self.visible = True
 		self.round_timer = 1000
 		self.wait_time = 20
-
-		self.color = color
 		
 	def is_dead(self):
 		return self.dead

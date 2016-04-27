@@ -284,8 +284,13 @@ class Game:
 				#mode selection state ---> ingame state / quit game
 				
 				
-				pygame.display.update()
+				self.player.clear_score()
+				self.num_ducks = 3
+				self.player.set_bullets(10)
 				self.ingame_screen()
+
+				pygame.display.update()
+
 			elif self.game_states["in"] == True:
 				self.music_player.play_sound("start_round")
 				
@@ -297,6 +302,7 @@ class Game:
 				self.player.set_bullets(10)
 
 				#Delay move ducks for six seconds until sound ends.
+				
 				self.ingame_screen()
 				
 				pygame.mouse.set_visible(False)
@@ -412,4 +418,5 @@ class Game:
 			
 
 	def random_duck_creator(self, mode):
-		return SquareDuck(self.window, mode, int(random.random()*self.window.get_width()*0.7) + self.window.get_width()//7, self.robot_eye.target_color)
+		random_x_pos = [int(self.w*0.2), int(self.w*0.4), int(self.w*0.6), int(self.w*0.8)]
+		return SquareDuck(self.window, mode, random.choice(random_x_pos), self.robot_eye.target_color)
