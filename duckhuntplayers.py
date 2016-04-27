@@ -93,7 +93,7 @@ class Robot(Player):
 
 		self.robot_eye = robot_eye
 
-		self.wait_time = 20
+		self.wait_time = 25
 
 		self.shot = False
 
@@ -114,14 +114,21 @@ class Robot(Player):
 		dx = 0
 		dy = 0
 
-		if(self.eye_x > mouse_x):
-			dx = 5
-		else:
-			dx = -5
-		if(mouse_y < self.eye_y):
-			dy = 5
-		else:
-			dy = -5
+		#if(self.eye_x > mouse_x):
+		#	dx = 5
+		#elif(self.eye < mouse_x):
+		#	dx = -5
+		#else:
+		#	dx = 0
+		#if(mouse_y < self.eye_y):
+		#	dy = 5
+		#elif(mouse_y > self.eye_y):
+		#	dy = -5
+		#else:
+		#	dy = 0
+
+		dx = 0.25*(self.eye_x - mouse_x)
+		dy = 0.25*(self.eye_y - mouse_y)
 
 		self.x = mouse_x+dx
 		self.y = mouse_y+dy
@@ -132,7 +139,7 @@ class Robot(Player):
 			self.wait_time-=1
 
 		if(self.wait_time <= 0):
-			self.wait_time = 20
+			self.wait_time = 25
 
 	def get_location(self):
 

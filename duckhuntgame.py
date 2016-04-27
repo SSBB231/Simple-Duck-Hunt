@@ -45,7 +45,7 @@ class Game:
 		#Create info object for screen resolution and other info.
 		self.info = pygame.display.Info()
 		#set window
-		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h))
+		self.window = pygame.display.set_mode((self.info.current_w,self.info.current_h), pygame.DOUBLEBUF)
 		
 			#window size for convinience
 		self.w = self.window.get_width()
@@ -68,7 +68,7 @@ class Game:
 
 		self.color_tuples = []
 
-		self.robot_eye = RobotEye(self.window)
+		self.robot_eye = RobotEye(self.window, self.info)
 
 		self.players = {"P1": InteractivePlayer(self.window), "R": Robot(self.window, self.robot_eye)}
 		self.player = self.players["P1"]

@@ -9,20 +9,22 @@ from pygame.locals import *
 pygame.camera.init()
 
 class RobotEye(object):
-    def __init__(self, window, target_color = None, brightness = 20):
+    def __init__(self, window, info, target_color = None, brightness = 20):
 
 	if(target_color == None):
 	    target_color = mycolors.PURPLE
 
 	self.brightness = brightness
 
-
-        self.size = (1024,720)
+        self.size = (info.current_w, info.current_h)
         # create a display surface. standard pygame stuff
         self.display = window
         
         # this is the same as what we saw before
         self.clist = pygame.camera.list_cameras()
+
+	print(self.clist)
+
         if not self.clist:
             raise ValueError("Sorry, no cameras detected.")
         self.cam = pygame.camera.Camera(self.clist[0], self.size)
