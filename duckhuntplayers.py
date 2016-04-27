@@ -127,8 +127,8 @@ class Robot(Player):
 		#else:
 		#	dy = 0
 
-		dx = 0.25*(self.eye_x - mouse_x)
-		dy = 0.25*(self.eye_y - mouse_y)
+		dx = 0.15*(self.eye_x - mouse_x)
+		dy = 0.15*(self.eye_y - mouse_y)
 
 		self.x = mouse_x+dx
 		self.y = mouse_y+dy

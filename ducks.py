@@ -6,7 +6,7 @@ class Duck:
 	
 	def __init__(self, window, mode, x_pos, color):
 		
-		self.width = window.get_width()//7
+		self.width = window.get_width()//10
 		self.height = self.width
 		
 		self.x = x_pos

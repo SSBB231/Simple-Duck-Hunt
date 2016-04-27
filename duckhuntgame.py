@@ -364,7 +364,8 @@ class Game:
 				#game over state ----> mode selection / quit game
 				self.mode_selection_screen()
 
-		
+		#Stop the camera.
+		self.robot_eye.cam.stop()
 	#def checkDucksGone(self):
 	##	if(len(self.ducks) <= 0):
 	#		return True

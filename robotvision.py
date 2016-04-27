@@ -9,7 +9,7 @@ from pygame.locals import *
 pygame.camera.init()
 
 class RobotEye(object):
-    def __init__(self, window, info, target_color = None, brightness = 20):
+    def __init__(self, window, info, target_color = None, brightness = 0):
 
 	if(target_color == None):
 	    target_color = mycolors.PURPLE
@@ -17,6 +17,9 @@ class RobotEye(object):
 	self.brightness = brightness
 
         self.size = (info.current_w, info.current_h)
+
+	#self.size = (640, 480)
+
         # create a display surface. standard pygame stuff
         self.display = window
         
@@ -27,9 +30,9 @@ class RobotEye(object):
 
         if not self.clist:
             raise ValueError("Sorry, no cameras detected.")
-        self.cam = pygame.camera.Camera(self.clist[0], self.size)
+        self.cam = pygame.camera.Camera(self.clist[1], self.size)
 
-	self.cam.set_controls(brightness=10)
+	self.cam.set_controls(brightness=self.brightness)
 
         self.cam.start()
 
@@ -48,17 +51,14 @@ class RobotEye(object):
 
     def get_snapshot(self):
 
-	print(self.cam.set_controls(brightness = self.brightness))
         # if you don't want to tie the framerate to the camera, you can check 
         # if the camera has an image ready.  note that while this works
         # on most cameras, some will never return true.
         if self.cam.query_image():
             self.snapshot = self.cam.get_image(self.snapshot)
 
-	    
-
         # threshold against the color we got before
-            self.mask = pygame.mask.from_threshold(self.snapshot, self.target_color, (50, 50, 50))
+            self.mask = pygame.mask.from_threshold(self.snapshot, self.target_color, (45, 45, 45))
             self.display.blit(self.snapshot,(0,0))
         # keep only the largest blob of that color
             connected = self.mask.connected_component()
@@ -75,6 +75,8 @@ class RobotEye(object):
 		self.brightness = 0
 
 	self.brightness+=4
+
+	print(self.cam.set_controls(brightness = self.brightness))
 
     def calibrate(self):
 
@@ -112,6 +114,7 @@ class RobotEye(object):
 	pygame.draw.circle(self.display, self.circle_color, self.coord, max(min(50,self.mask.count()/400),5))
 	
 	snapshot = pygame.transform.scale(self.snapshot, (int(self.display.get_width()*0.2), int(self.display.get_height()*0.2)))
+	snapshot = snapshot.convert()
 	self.display.blit(snapshot, (int(self.display.get_width()-snapshot.get_width()), int(0)))
 	
 
