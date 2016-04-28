@@ -169,6 +169,9 @@ class Duck:
 		
 	def change_y_speed(self, speed):
 		self.y_speed = speed
+
+	def change_color(self, target_color):
+		self.color = target_color
 		
 ##=========================================================
 

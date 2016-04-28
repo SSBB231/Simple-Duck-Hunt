@@ -9,7 +9,7 @@ from pygame.locals import *
 pygame.camera.init()
 
 class RobotEye(object):
-    def __init__(self, window, info, target_color = None, brightness = 0):
+    def __init__(self, window, info, target_color = None, brightness = 50):
 
 	if(target_color == None):
 	    target_color = mycolors.PURPLE
@@ -58,7 +58,7 @@ class RobotEye(object):
             self.snapshot = self.cam.get_image(self.snapshot)
 
         # threshold against the color we got before
-            self.mask = pygame.mask.from_threshold(self.snapshot, self.target_color, (45, 45, 45))
+            self.mask = pygame.mask.from_threshold(self.snapshot, self.target_color, (50, 50, 50))
             self.display.blit(self.snapshot,(0,0))
         # keep only the largest blob of that color
             connected = self.mask.connected_component()
@@ -71,10 +71,10 @@ class RobotEye(object):
 	self.target_color = color
 
     def change_brightness(self):
-	if(self.brightness >= 50):
-		self.brightness = 0
+	if(self.brightness >= 200):
+		self.brightness = 50
 
-	self.brightness+=4
+	self.brightness+=5
 
 	print(self.cam.set_controls(brightness = self.brightness))
 

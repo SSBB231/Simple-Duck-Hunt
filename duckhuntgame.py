@@ -85,10 +85,14 @@ class Game:
 	##==========================================================================
 	
 	def change_background(self):
-		if(self.background_color == mycolors.BLACK):
+		if(self.background_color == mycolors.BLUE):
 			self.background_color = mycolors.LIGHT_BLUE
+			self.robot_eye.change_target_color(mycolors.PURPLE)
+			self.duck.change_color(mycolors.PURPLE)
 		else:
 			self.background_color = mycolors.BLUE
+			self.robot_eye.change_target_color(mycolors.WHITE)
+			self.duck.change_color(mycolors.WHITE)
 	
 	##==========================================================================
 	##==========================================================================
